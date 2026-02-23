@@ -1,24 +1,15 @@
-using Microsoft.EntityFrameworkCore;
-using Product.Application.Products.Handlers;
-using Product.Domain.Repositories;
-using Product.Infrastructure.Data;
-using Product.Infrastructure.Repositories;
+using Product.Application;
+using Product.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ProductDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("PostgreSql")
-    )
-);
-
-
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+// Clean Architecture DI extensions
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<CreateProductHandler>();
 
 var app = builder.Build();
 

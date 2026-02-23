@@ -1,20 +1,13 @@
 ﻿using Product.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Product.Domain.Events
+namespace Product.Domain.Events;
+
+public class ProductCreatedEvent : BaseDomainEvent
 {
+    public Guid ProductId { get; }
 
-    public class ProductCreatedEvent : DomainEvent
+    public ProductCreatedEvent(Guid productId)
     {
-        public Guid ProductId { get; }
-
-        public ProductCreatedEvent(Guid productId)
-        {
-            ProductId = productId;
-        }
+        ProductId = productId;
     }
 }
