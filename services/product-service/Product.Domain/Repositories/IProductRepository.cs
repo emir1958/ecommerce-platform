@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Product.Domain.Entities;
-
-namespace Product.Domain.Repositories;
+﻿namespace Product.Domain.Repositories;
 
 public interface IProductRepository
 {
@@ -14,6 +7,4 @@ public interface IProductRepository
     Task<List<Entities.Product>> GetAllAsync();
 
     Task AddAsync(Entities.Product product);
-
-    Task SaveChangesAsync();
 }

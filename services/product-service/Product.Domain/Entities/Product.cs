@@ -1,16 +1,14 @@
 ﻿using Product.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Product.Domain.Events;
+using Product.Domain.Exceptions;
 
 namespace Product.Domain.Entities;
+
 public class Product : BaseEntity
 {
-    public Guid Id { get; private set; }
-    public string Name { get; private set; }
-    public string Description { get; private set; }
+    public string Name { get; private set; } = default!;
+    public string Description { get; private set; } = default!;
+    public string Brand { get; private set; } = default!;
     public bool IsActive { get; private set; }
 
     private readonly List<ProductVariant> _variants = new();
@@ -18,20 +16,30 @@ public class Product : BaseEntity
 
     protected Product() { }
 
-    public Product(string name, string description)
+    private Product(string name, string description)
     {
         Id = Guid.NewGuid();
         Name = name;
         Description = description;
         IsActive = true;
+    }
 
-        AddDomainEvent(new ProductCreatedEvent(Id));
+    public static Product Create(string name, string description)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Name boş olamaz");
+
+        var product = new Product(name, description);
+
+        product.AddDomainEvent(new ProductCreatedEvent(product.Id));
+
+        return product;
     }
 
     public void AddVariant(string sku, decimal price, int stock)
     {
         if (_variants.Any(x => x.Sku == sku))
-            throw new Exception("Bu SKU'ya sahip bir varyant zaten mevcut.");
+            throw new DomainException("Bu SKU'ya sahip bir varyant zaten mevcut.");
 
         _variants.Add(new ProductVariant(sku, price, stock));
     }

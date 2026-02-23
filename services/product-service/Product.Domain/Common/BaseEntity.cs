@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Product.Domain.Common;
+﻿namespace Product.Domain.Common;
 
 public abstract class BaseEntity
 {
-    private readonly List<DomainEvent> _domainEvents = new();
+    public Guid Id { get; protected set; }
 
-    public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+    private readonly List<BaseDomainEvent> _domainEvents = new();
 
-    protected void AddDomainEvent(DomainEvent domainEvent)
-    {
-        _domainEvents.Add(domainEvent);
-    }
+    public IReadOnlyCollection<BaseDomainEvent> DomainEvents => _domainEvents;
+
+    protected void AddDomainEvent(BaseDomainEvent domainEvent)
+        => _domainEvents.Add(domainEvent);
 
     public void ClearDomainEvents()
-    {
-        _domainEvents.Clear();
-    }
+        => _domainEvents.Clear();
 }
