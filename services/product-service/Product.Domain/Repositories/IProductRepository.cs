@@ -7,4 +7,6 @@ public interface IProductRepository
     Task<List<Entities.Product>> GetAllAsync();
 
     Task AddAsync(Entities.Product product);
+    Task UpdateAsync(Entities.Product product);
+    Task DeleteAsync(Entities.Product product);
 }

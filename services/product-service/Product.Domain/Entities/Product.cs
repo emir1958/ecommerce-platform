@@ -16,26 +16,33 @@ public class Product : BaseEntity
 
     protected Product() { }
 
-    private Product(string name, string description)
+    private Product(string name, string description,string brand)
     {
         Id = Guid.NewGuid();
         Name = name;
         Description = description;
+        Brand = brand;
         IsActive = true;
     }
 
-    public static Product Create(string name, string description)
+    public static Product Create(string name, string description,string brand)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Name boş olamaz");
 
-        var product = new Product(name, description);
+        var product = new Product(name, description,brand);
 
         product.AddDomainEvent(new ProductCreatedEvent(product.Id));
 
         return product;
     }
-
+    public void Update(string name, string description, string brand)
+    {
+        Name = name;
+        Description = description;
+        Brand = brand;
+        // Domain event tetikleme mümkün
+    }
     public void AddVariant(string sku, decimal price, int stock)
     {
         if (_variants.Any(x => x.Sku == sku))

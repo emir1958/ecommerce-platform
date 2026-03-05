@@ -26,7 +26,7 @@ public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
         if (!requestName.EndsWith("Command"))
             return await next();
 
-        _logger.LogInformation("Beginning transaction for {RequestName}", requestName);
+        _logger.LogInformation("İşlem başlatıldı: {RequestName}", requestName);
 
         try
         {
@@ -34,13 +34,13 @@ public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Transaction committed for {RequestName}", requestName);
+            _logger.LogInformation("İşlem başarıyla tamamlandı (commit edildi): {RequestName}", requestName);
 
             return response;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Transaction failed for {RequestName}", requestName);
+            _logger.LogError(ex, "İşlem sırasında hata oluştu: {RequestName}", requestName);
             throw;
         }
     }

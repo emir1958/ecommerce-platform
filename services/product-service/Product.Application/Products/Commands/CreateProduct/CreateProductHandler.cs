@@ -17,7 +17,8 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Guid>
     {
         var product = DomainProduct.Create(
             command.Name,
-            command.Description
+            command.Description,
+             command.Brand
         );
 
         await _repository.AddAsync(product);

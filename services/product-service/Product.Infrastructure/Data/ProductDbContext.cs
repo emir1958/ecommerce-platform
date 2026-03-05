@@ -60,7 +60,7 @@ public class ProductDbContext : DbContext, IUnitOfWork
                   .IsRequired();
 
             entity.HasIndex(o => o.ProcessedOn)
-                  .HasFilter("[ProcessedOn] IS NULL")
+                 .HasFilter("\"ProcessedOn\" IS NULL")
                   .HasDatabaseName("IX_OutboxMessages_Unprocessed");
         });
     }
